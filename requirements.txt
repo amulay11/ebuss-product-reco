@@ -33,7 +33,7 @@ ml-dtypes==0.4.0
 multitasking==0.0.11
 namex==0.0.8
 nsepython==2.94
-numpy==1.26.4
+numpy==1.26.4,<2.0.0
 openpyxl==3.1.5
 opt-einsum==3.3.0
 optree==0.12.1
@@ -44,7 +44,6 @@ pipx==1.5.0
 platformdirs==4.2.1
 protobuf==4.25.3
 pydotplus==2.0.2
-pyFUME==0.3.4
 Pygments==2.18.0
 pyparsing==3.1.2
 python-dateutil==2.9.0.post0
