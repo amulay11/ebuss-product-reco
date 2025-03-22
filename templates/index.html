@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Recommendation</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-weight: 600;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Loading Animation */
+        .loading-container {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .hourglass {
+            font-size: 40px;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Recommendations Box */
+        .recommendations-box {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            display: none;
+        }
+
+        .recommendations-box h3 {
+            font-size: 18px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            background: #f8f9fa;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Product Recommendations</h2>
+        <form id="userForm">
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <button type="submit">Get Recommendations</button>
+        </form>
+
+        <div id="loading" class="loading-container">
+            <p>Processing request... Please wait.</p>
+            <div class="hourglass">⏳</div>
+        </div>
+    </div>
+
+    <div id="recommendations" class="recommendations-box">
+        <h3>Top 5 Recommendations:</h3>
+        <ul id="recommendations-list"></ul>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#userForm").submit(function(event) {
+                event.preventDefault(); // Prevent page refresh
+                
+                var username = $("#username").val().trim();
+
+                if (username === "") {
+                    alert("Please enter a valid username.");
+                    return;
+                }
+
+                console.log("Submitting request for username:", username);
+
+                // Hide previous results
+                $("#recommendations-list").html("");
+                $("#recommendations").hide();
+                $("#loading").hide();
+
+                $.ajax({
+                    url: "/recommend",
+                    type: "POST",
+                    data: { username: username },
+                    dataType: "json",
+                    beforeSend: function() {
+                        $("#loading").show(); // Show hourglass
+                    },
+                    success: function(response) {
+                        $("#loading").hide(); // Hide hourglass
+
+                        if (response.error) {
+                            alert(response.error); // Show error message
+                        } else {
+                            response.recommendations.forEach(function(product) {
+                                $("#recommendations-list").append("<li>" + product + "</li>");
+                            });
+
+                            $("#recommendations").fadeIn(); // Show recommendations
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $("#loading").hide();
+                        alert("Error fetching recommendations: " + error);
+                        console.error("AJAX Error:", error);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
