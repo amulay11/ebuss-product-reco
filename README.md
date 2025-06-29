@@ -46,4 +46,3 @@ Ebuss is an emerging e-commerce company competing with established players like 
 ## Contributors
 - Abhishek Mulay
 
-## License
