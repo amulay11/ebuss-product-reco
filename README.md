@@ -36,14 +36,6 @@ Ebuss is an emerging e-commerce company competing with established players like 
   - Input an existing username.
   - Submit the username via a button "Get Recommendations".
   - Display five recommended products based on sentiment analysis.
-- **Deployment:** Deploy the application using Flask and make it publicly accessible via Heroku.
-
-## Launching the app
-Access the web app at (https://ebuss-product-reco-62ec2e58ca0f.herokuapp.com/)
-
-## Deployment on Heroku
-The app is deployed at below link on Heroku
-https://ebuss-product-reco-62ec2e58ca0f.herokuapp.com/   ```
 
 ## Technologies Used
 - **Programming Language:** Python
